@@ -234,11 +234,13 @@ ANSC_STATUS CosaDmlGponSetPhyStatusForWanManager(int iVeipIndex ,char *LowerLaye
     PDML_VEIP pGponVeip = NULL;
     INT iWANInstance = -1;
 
+        CcspTraceError(("%s  ARUNLOG:001\n", __FUNCTION__));
     if (LowerLayers == NULL)
     {
         CcspTraceError(("%s Invalid LowerLayers Value\n", __FUNCTION__));
         return ANSC_STATUS_FAILURE;
     }
+        CcspTraceError(("%s  ARUNLOG:002\n", __FUNCTION__));
     if (PhyStatus == NULL)
     {
         CcspTraceError(("%s Invalid Physical Status\n", __FUNCTION__));
@@ -246,13 +248,16 @@ ANSC_STATUS CosaDmlGponSetPhyStatusForWanManager(int iVeipIndex ,char *LowerLaye
     }
 
     GPON_DML_DATA* pGponDmlData = GponMgrDml_GetData_locked();
+        CcspTraceError(("%s  ARUNLOG:004\n", __FUNCTION__));
     if(pGponDmlData != NULL)
     {
         DML_VEIP_CTRL_T* pGponVeipCtrl = pGponDmlData->gpon.Veip.pdata[iVeipIndex];
+        CcspTraceError(("%s  ARUNLOG:005\n", __FUNCTION__));
         if(pGponVeipCtrl!= NULL)
         {
             pGponVeip = &(pGponVeipCtrl->dml);
 
+             CcspTraceError(("%s  ARUNLOG:006\n", __FUNCTION__));
             // get veip interface structure
             if (pGponVeip == NULL)
             {
@@ -261,13 +266,16 @@ ANSC_STATUS CosaDmlGponSetPhyStatusForWanManager(int iVeipIndex ,char *LowerLaye
                 return ANSC_STATUS_FAILURE;
             }
 
+        CcspTraceError(("%s  ARUNLOG:007\n", __FUNCTION__));
             //get Veip InterDomain Name
             snprintf(ifname, sizeof(ifname), "%s", pGponVeip->InterfaceName);
+        CcspTraceError(("%s  ARUNLOG:008 ifname=%s\n", __FUNCTION__,ifname));
         }
 
         GponMgrDml_GetData_release(pGponDmlData);
     }
 
+        CcspTraceError(("%s  ARUNLOG:009 iWanInstance=%d\n", __FUNCTION__,iWANInstance));
     //Get Instance for corresponding name
     if (ANSC_STATUS_FAILURE == CosaDmlGetLowerLayersInstanceInWanManager(ifname, &iWANInstance))
     {
@@ -275,6 +283,7 @@ ANSC_STATUS CosaDmlGponSetPhyStatusForWanManager(int iVeipIndex ,char *LowerLaye
         return ANSC_STATUS_FAILURE;
     }
 
+        CcspTraceError(("%s  ARUNLOG:0010\n", __FUNCTION__));
     if (iWANInstance == -1)
     {
         CcspTraceError(("%s %d WAN instance not present\n", __FUNCTION__, __LINE__));
@@ -282,6 +291,7 @@ ANSC_STATUS CosaDmlGponSetPhyStatusForWanManager(int iVeipIndex ,char *LowerLaye
     }
 
     CcspTraceInfo(("%s %d WAN Instance:%d\n", __FUNCTION__, __LINE__, iWANInstance));
+    CcspTraceInfo(("%s %d ARUNLOG:0011WAN Instance:%d\n", __FUNCTION__, __LINE__, iWANInstance));
 
     memset(ParamName, 0, sizeof(ParamName));
     snprintf(ParamName, sizeof(ParamName),WAN_BASE_INTERFACE_PARAM_NAME, iWANInstance);
@@ -291,6 +301,7 @@ ANSC_STATUS CosaDmlGponSetPhyStatusForWanManager(int iVeipIndex ,char *LowerLaye
         return ANSC_STATUS_FAILURE;
     }
 
+        CcspTraceError(("%s  ARUNLOG:0012  CMP ParamVal=%s and LowerLayers=%s\n", __FUNCTION__,ParamVal,LowerLayers));
     if (strncmp(ParamVal, LowerLayers,sizeof(ParamVal)) != 0)
     {
         CcspTraceError(("%s %d BaseInterface is not matching with LowerLayer\n", __FUNCTION__, __LINE__));
@@ -300,6 +311,7 @@ ANSC_STATUS CosaDmlGponSetPhyStatusForWanManager(int iVeipIndex ,char *LowerLaye
     //Set Link Status
     memset(ParamName, 0, sizeof(ParamName));
     snprintf(ParamName, sizeof(ParamName),WAN_LINK_STATUS_PARAM_NAME, iWANInstance);
+        CcspTraceError(("%s  ARUNLOG:0013 Linkstatus=%s\n", __FUNCTION__,ParamName));
 
     if (Gponmgr_eth_setParams(WAN_MGR_COMPONENT_NAME, WAN_MGR_DBUS_PATH, ParamName, PhyStatus, ccsp_string, TRUE) != ANSC_STATUS_SUCCESS)
     {
@@ -307,6 +319,7 @@ ANSC_STATUS CosaDmlGponSetPhyStatusForWanManager(int iVeipIndex ,char *LowerLaye
         return ANSC_STATUS_FAILURE;
     }
  
+        CcspTraceError(("%s  ARUNLOG:0014-End\n", __FUNCTION__));
     CcspTraceInfo(("%s %d Successfully notified %s event to WAN Manager for %s interface\n", __FUNCTION__, __LINE__, PhyStatus, ifname));
 
     return ANSC_STATUS_SUCCESS;
