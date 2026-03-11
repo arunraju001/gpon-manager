@@ -100,22 +100,27 @@ ANSC_STATUS GponHal_Init()
 #if defined(WAN_MANAGER_UNIFICATION_ENABLED)
     if (access("/bin/json_hal_server_gpon", F_OK) == 0)
     {
+        CcspTraceError(("ARUNLOG: CASE 001 in bin\n"));
         v_secure_system("/bin/json_hal_server_gpon  /etc/rdk/conf/gpon_manager_wan_unify_conf.json &");
     }
     else
     {
+        CcspTraceError(("ARUNLOG: CASE 002 in usrbin\n"));
         v_secure_system("/usr/bin/json_hal_server_gpon  /etc/rdk/conf/gpon_manager_wan_unify_conf.json &");
     }
 #endif
 
+        CcspTraceError(("ARUNLOG: CASE 003 \n"));
     if (json_hal_client_init(GPON_MANAGER_CONF_FILE) != RETURN_OK)
     {
+        CcspTraceError(("ARUNLOG: CASE 004 \n"));
         CcspTraceError(("%s - %d Failed to initialise json hal client library \n", __FUNCTION__, __LINE__));
         return ANSC_STATUS_FAILURE;
     }
 
     if (json_hal_client_run() != RETURN_OK)
     {
+        CcspTraceError(("ARUNLOG: CASE 005\n"));
         CcspTraceError(("%s - %d Failed to start the json hal client module \n", __FUNCTION__, __LINE__));
         return ANSC_STATUS_FAILURE;
     }
@@ -136,6 +141,7 @@ ANSC_STATUS GponHal_Init()
         }
         else
         {
+        CcspTraceError(("ARUNLOG: CASE 009\n"));
             CcspTraceInfo(("Hal-client connected to the hal server\n"));
             is_client_connected = TRUE;
             break;
@@ -144,6 +150,7 @@ ANSC_STATUS GponHal_Init()
 
     if (is_client_connected != TRUE)
     {
+        CcspTraceError(("ARUNLOG: CASE 00A\n"));
         CcspTraceError(("Failed to connect to the hal server\n"));
         return ANSC_STATUS_FAILURE;
     }
