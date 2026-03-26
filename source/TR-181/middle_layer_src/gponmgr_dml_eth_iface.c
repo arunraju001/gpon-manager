@@ -235,6 +235,7 @@ ANSC_STATUS CosaDmlGponSetPhyStatusForWanManager(int iVeipIndex ,char *LowerLaye
     INT iWANInstance = -1;
 
         CcspTraceError(("%s  ARUNLOG:001\n", __FUNCTION__));
+	CcspTraceError(("ARUNLOG: Trace:%s  Msg: Getting ready to info WANManger regading interface\n",__FUNCTION__));
     if (LowerLayers == NULL)
     {
         CcspTraceError(("%s Invalid LowerLayers Value\n", __FUNCTION__));
@@ -311,6 +312,7 @@ ANSC_STATUS CosaDmlGponSetPhyStatusForWanManager(int iVeipIndex ,char *LowerLaye
     //Set Link Status
     memset(ParamName, 0, sizeof(ParamName));
     snprintf(ParamName, sizeof(ParamName),WAN_LINK_STATUS_PARAM_NAME, iWANInstance);
+	CcspTraceError(("ARUNLOG: Trace:%s  Msg: Getting ready to info WANManger WAN_LINK_PARAMA_NAME ",__FUNCTION__));
         CcspTraceError(("%s  ARUNLOG:0013 Linkstatus=%s\n", __FUNCTION__,ParamName));
 
     if (Gponmgr_eth_setParams(WAN_MGR_COMPONENT_NAME, WAN_MGR_DBUS_PATH, ParamName, PhyStatus, ccsp_string, TRUE) != ANSC_STATUS_SUCCESS)
@@ -336,6 +338,7 @@ ANSC_STATUS Gponmgr_eth_addInterface(int iVeipIndex, char *LowerLayers, int *iVe
 
     *iVeipInstance = -1;
 
+	CcspTraceError(("ARUNLOG: Trace:%s  Msg: in Eth Add interface , Wan mgr info.. ",__FUNCTION__));
     if ( NULL == LowerLayers )
     {
         CcspTraceError(("%s %d - Failed to add Eth Interface\n", __FUNCTION__, __LINE__));
@@ -365,8 +368,10 @@ ANSC_STATUS Gponmgr_eth_addInterface(int iVeipIndex, char *LowerLayers, int *iVe
         GponMgrDml_GetData_release(pGponDmlData);
     }
 
+	CcspTraceError(("ARUNLOG: Trace:%s  Msg: Check Eth table entry.. ",__FUNCTION__));
     if(isGponExistsInEthAgent(iDomainName, &iNewTableInstance) != ANSC_STATUS_SUCCESS) 
     {
+	CcspTraceError(("ARUNLOG: Trace:%s  Msg: Check veip ethry.. ",__FUNCTION__));
         // Create table entry for veip
         if (CCSP_SUCCESS != CcspBaseIf_AddTblRow(
                             bus_handle,
@@ -389,6 +394,7 @@ ANSC_STATUS Gponmgr_eth_addInterface(int iVeipIndex, char *LowerLayers, int *iVe
     snprintf(acSetParamName, MAX_STR_ARR_SIZE, ETH_MGR_IFACE_NAME, iNewTableInstance);
     Gponmgr_eth_setParams(ETH_MGR_COMPONENT_NAME, ETH_MGR_DBUS_PATH, acSetParamName, iDomainName, ccsp_string, FALSE);
 
+	CcspTraceError(("ARUNLOG: Trace:%s  Msg: Set the ETH param=%s ",__FUNCTION__,iDomainName));
     //Set Name - Wan Manager
     Gponmgr_eth_setParams(WAN_MGR_COMPONENT_NAME, WAN_MGR_DBUS_PATH, WAN_MGR_GPON_CPE_NAME, iDomainName, ccsp_string, TRUE);
 
@@ -398,6 +404,7 @@ ANSC_STATUS Gponmgr_eth_addInterface(int iVeipIndex, char *LowerLayers, int *iVe
     Gponmgr_eth_setParams(ETH_MGR_COMPONENT_NAME, ETH_MGR_DBUS_PATH, acSetParamName, LowerLayers, ccsp_string, FALSE);
 
     CcspTraceInfo(("%s.%d SUCCESS iVeipInstance[%d] - iVeipIndex[%d] \n", __FUNCTION__, __LINE__, *iVeipInstance, iVeipIndex ));
+    CcspTraceError(("%s.%d SUCCESS iVeipInstance[%d] - iVeipIndex[%d]  ARUNLOG: Trace: Lowerlayer for ethMgr is also set\n", __FUNCTION__, __LINE__, *iVeipInstance, iVeipIndex ));
 
     return ANSC_STATUS_SUCCESS;
 }
@@ -418,6 +425,7 @@ ANSC_STATUS Gponmgr_eth_setEnableInterface(int iVeipInstance, BOOL bflag)
     }
 
     CcspTraceInfo(("%s.%d SUCCESS veipNum[%d]\n", __FUNCTION__, __LINE__, iVeipInstance));
+	CcspTraceError(("ARUNLOG: Trace:%s  Msg: Eth Enable is Set ",__FUNCTION__));
 
     return ANSC_STATUS_SUCCESS;
 }

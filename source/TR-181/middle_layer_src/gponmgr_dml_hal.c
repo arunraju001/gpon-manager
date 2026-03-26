@@ -580,7 +580,7 @@ void eventcb_VeipAdministrativeState(const char *msg, const int len)
     char event_name[256] = {'\0'};
     char event_val[256] = {'\0'};
     int hal_index = 0;
-
+ CcspTraceError(("ARUNLOG: Trace:%s  Msg: EVENT CB on the Admin State\n",__FUNCTION__));
     ret = get_event_param(msg, len, event_name, event_val);
     if(ret == ANSC_STATUS_SUCCESS)
     {
@@ -606,6 +606,7 @@ void eventcb_VeipAdministrativeState(const char *msg, const int len)
                             DML_VEIP* pGponVeip = &(pGponVeipCtrl->dml);
                             if(pGponVeip->AdministrativeState == Unlock)
                             {
+ CcspTraceError(("ARUNLOG: Trace:%s  Msg: EVENT CB on the Admin State--Start SM on that VEIP\n",__FUNCTION__));
                                 //start SM thread
                                 ret = GponMgr_Link_StateMachine_Start(pGponVeip);
                                 if(ret == ANSC_STATUS_SUCCESS)
@@ -634,6 +635,7 @@ void eventcb_VeipOperationalState(const char *msg, const int len)
     ANSC_STATUS ret = ANSC_STATUS_FAILURE;
     char event_name[256] = {'\0'};
     char event_val[256] = {'\0'};
+     CcspTraceError(("ARUNLOG: Trace:%s  Msg: EVENT CB on L2 OperationState\n",__FUNCTION__));
 #if defined(WAN_MANAGER_UNIFICATION_ENABLED)
     int hal_index = 0;
 #endif
@@ -666,6 +668,7 @@ void eventcb_VeipOperationalState(const char *msg, const int len)
                             DML_VEIP* pGponVeip = &(pGponVeipCtrl->dml);
                             if(pGponVeip->AdministrativeState == Unlock)
                             {
+     CcspTraceError(("ARUNLOG: Trace:%s  Msg: EVENT CB on L2 OperationState-Start SM on that veip\n",__FUNCTION__));
                                 //start SM thread
                                 ret = GponMgr_Link_StateMachine_Start(pGponVeip);
 
