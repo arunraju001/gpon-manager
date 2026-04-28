@@ -69,6 +69,8 @@
 #include "breakpad_wrapper.h"
 #endif
 
+#include <telemetry_busmessage_sender.h>
+
 extern char*                                pComponentName;
 char                                        g_Subsystem[32]         = {0};
 extern ANSC_HANDLE bus_handle;
@@ -240,6 +242,8 @@ int main(int argc, char* argv[])
     int                             cmdChar            = 0;
     int                             idx                = 0;
     FILE                           *fd                 = NULL;
+
+    t2_init("my_rdkb_component");
 
     char *subSys            = NULL;
     DmErr_t    err;

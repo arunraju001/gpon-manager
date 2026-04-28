@@ -135,11 +135,11 @@ ANSC_STATUS gpon_config_veip_interface(GPON_LINK_SM_CTRL_T* gpon_sm_ctrl)
     ANSC_STATUS ret = ANSC_STATUS_SUCCESS;
     int veip_index;
 
- //   CcspTraceError(("ARUNLOG: Trace:%s  Msg:veip interface change detected\n",__FUNCTION__));
+    CcspTraceError(("ARUNLOG: Trace:%s  Msg:veip interface change detected\n",__FUNCTION__));
     //update veip inteface
     if( gpon_sm_ctrl != NULL && gpon_sm_ctrl->pGponData != NULL)
     {
-   //     CcspTraceError(("ARUNLOG: Trace:%s  Msg: Get veip from HAL\n",__FUNCTION__));
+        CcspTraceError(("ARUNLOG: Trace:%s  Msg: Get veip from HAL\n",__FUNCTION__));
         ret = GponHal_get_veip(&(gpon_sm_ctrl->pGponData->gpon.Veip));
         if(ret == ANSC_STATUS_SUCCESS)
         {
@@ -148,10 +148,10 @@ ANSC_STATUS gpon_config_veip_interface(GPON_LINK_SM_CTRL_T* gpon_sm_ctrl)
             sprintf(gpon_sm_ctrl->veip_lower_layer, GPON_HAL_VEIP_NODE, gpon_sm_ctrl->veip_hal_index);
 
 #if defined(WAN_MANAGER_UNIFICATION_ENABLED)
-	//    CcspTraceError(("ARUNLOG: Trace:%s  Msg: Notify WanMager by settung PhyStatus INTERFACE_UP\n",__FUNCTION__));
+	    CcspTraceError(("ARUNLOG: Trace:%s  Msg: Notify WanMager by settung PhyStatus INTERFACE_UP\n",__FUNCTION__));
             ret =  CosaDmlGponSetPhyStatusForWanManager(veip_index,gpon_sm_ctrl->veip_lower_layer,INTERFACE_UP);
 #else
-	 //   CcspTraceError(("ARUNLOG: Trace:%s  Msg: Notify EthAgent  by adding interfacea and enabling Eth interface TRUE\n",__FUNCTION__));
+	    CcspTraceError(("ARUNLOG: Trace:%s  Msg: Notify EthAgent  by adding interfacea and enabling Eth interface TRUE\n",__FUNCTION__));
             //add GW interface
             ret = Gponmgr_eth_addInterface(veip_index, gpon_sm_ctrl->veip_lower_layer, &(gpon_sm_ctrl->veip_eth_instance));
 
